@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\API\ApiError;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 
 class Inventory extends Model
 {
@@ -26,6 +27,16 @@ class Inventory extends Model
         return $total;
     }
 
+    public function scopecalcAmmount($qtyWater, $qtyFood, $qtyMedication, $qtyAmmo){
+        $tradeAmmount = array(
+            'water' => $qtyWater,
+            'food' => $qtyFood,
+            'medication' => $qtyMedication,
+            'ammo' => $qtyAmmo
+        );
+        return $tradeAmmount;
+    }
+
     /**
      * Check if the survivor has the ammount of items necessary to 
      * @param  array $trade
@@ -39,6 +50,8 @@ class Inventory extends Model
             return response()->json(ApiError::errorMessage('Not enough medication to trade', 406));
         }else if($trade['ammo'] > $this->qtyAmmo){
             return response()->json(ApiError::errorMessage('Not enough ammo to trade', 406));
+        }else{
+            return 1;
         }
     }
 
@@ -47,10 +60,12 @@ class Inventory extends Model
     * @param  array $tradeAmmount
     * @return \Illuminate\Http\Response
     */
-    public function calcTradeCost($tradeAmmount){
+    public function scopecalcTradeCost($tradeAmmount){
         $totalCost = 0;
         $cost = 4;
-        foreach($tradeAmmount as $ammount){ //for each item ammount calculate it's cost
+
+        //for each item ammount calculate it's cost
+        foreach($tradeAmmount as $ammount){ 
             $totalCost += $ammount * $cost;
             $cost--;
         }

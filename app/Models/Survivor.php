@@ -3,6 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
+use App\API\ApiError;
+use App\API\ApiSucess;
 
 class Survivor extends Model
 {
@@ -25,7 +28,9 @@ class Survivor extends Model
     */
     public function isAllowedToTrade(){
         if($this->infected){
-            return response()->json(ApiError::errorMessage('Infected survivor(s) cannot trade', 403));
+            return 0;
+        }else{
+            return 1;
         }
     }
 

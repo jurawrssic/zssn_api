@@ -117,41 +117,48 @@ class SurvivorController extends Controller
         //retrieving survivors through it's id
         $survivor1 = Survivor::with('inventory')->get()->find($request->input('survivor1.id'));
         $survivor2 = Survivor::with('inventory')->get()->find($request->input('survivor2.id')); 
-        
-        //checking if survivors wanting to trade are infected or not
-        $survivor1->isAllowedToTrade();
-        $survivor2->isAllowedToTrade();
 
-        //ammount of each item that survivor1 wants to trade   
-        $tradeAmmount1 = array(
-            'water' => $request->input('survivor1.qtyWater'),
-            'food' => $request->input('survivor1.qtyFood'),
-            'medication' => $request->input('survivor1.qtyMedication'),
-            'ammo' => $request->input('survivor1.qtyAmmo')
-        );
+        //checking if survivors are healthy
+        if($survivor1->isAllowedToTrade() && $survivor2->isAllowedToTrade()){
+            //ammount of each item that survivor1 wants to trade  
+            $tradeAmmount1 = array(
+                'water' => $request->input('survivor1.qtyWater'),
+                'food' => $request->input('survivor1.qtyFood'),
+                'medication' => $request->input('survivor1.qtyMedication'),
+                'ammo' => $request->input('survivor1.qtyAmmo')
+            );
+    
+            //ammount of each item that survivor2 wants to trade   
+            $tradeAmmount2 = array(
+                'water' => $request->input('survivor2.qtyWater'),
+                'food' => $request->input('survivor2.qtyFood'),
+                'medication' => $request->input('survivor2.qtyMedication'),
+                'ammo' => $request->input('survivor2.qtyAmmo')
+            );
 
-        //ammount of each item that survivor2 wants to trade   
-        $tradeAmmount2 = array(
-            'water' => $request->input('survivor2.qtyWater'),
-            'food' => $request->input('survivor2.qtyFood'),
-            'medication' => $request->input('survivor2.qtyMedication'),
-            'ammo' => $request->input('survivor2.qtyAmmo')
-        );
+            //calculating costs for both survivors
+            $tradeCost1 = Inventory::calcTradeCost($tradeAmmount1);
+            $tradeCost2 = Inventory::calcTradeCost($tradeAmmount2);
 
-        //getting survivors inventory
-        $inventory1 = Inventory::find($survivor1->inventory_id);
-        $inventory2 = Inventory::find($survivor2->inventory_id);
+            //if trade cost is equivalent
+            if($tradeCost1 == $tradeCost2){
+                //retrieve inventories
+                $inventory1 = Inventory::find($survivor1->inventory_id);
+                $inventory2 = Inventory::find($survivor2->inventory_id);
 
-        //checking if the survivor has the items he wants to trade
-        //checking if the trade cost is equal for both sides
-        //execute trade
-        $inventory1->checkInventory($tradeAmmount1)->checkTradeCost($tradeAmmount1, $tradeAmmount2)->executeTrade($tradeAmmount1, $tradeAmmount2);
-        //trade cost was already checked in the line above so, going straight to the trade
-        $inventory2->checkInventory($tradeAmmount2)->executeTrade($tradeAmmount1, $tradeAmmount2);
-        
-        //updating inventories after the trade
-        $inventory1->update();
-        $inventory2->update();
+                //checking if survivors have the items they wish to sell/trade
+                if($inventory1->checkInventory($tradeAmmount1) && $inventory1->checkInventory($tradeAmmount2)){
+                    //executing trade for both survivors
+                    $inventory1->executeTrade($tradeAmmount1, $tradeAmmount2);
+                    $inventory2->executeTrade($tradeAmmount2, $tradeAmmount1);
+
+                    $inventory1->update();
+                    $inventory2->update();
+                }
+            }
+        }else{
+            return response()->json(ApiError::errorMessage('Infected survivor(s) cannot trade', 403));
+        }
     }
 
     /**

@@ -12,7 +12,7 @@ class Inventory extends Model
     protected $table = 'inventories';
 
     /**
-    * Define relationship between Models
+    * Defining relationship between Models
     */
     public function survivor(){
         return $this->belongsTo('\App\Models\Survivor');
@@ -27,7 +27,8 @@ class Inventory extends Model
     }
 
     /**
-     * Check if the survivor has the ammount of items necessary to trade
+     * Check if the survivor has the ammount of items necessary to 
+     * @param  array $trade
      */
     public function checkInventory($trade){
         if($trade['water'] > $this->qtyWater){
@@ -39,6 +40,46 @@ class Inventory extends Model
         }else if($trade['ammo'] > $this->qtyAmmo){
             return response()->json(ApiError::errorMessage('Not enough ammo to trade', 406));
         }
-        return true;
+    }
+
+    /**
+    * Calculate the price for each trade
+    * @param  array $tradeAmmount
+    * @return \Illuminate\Http\Response
+    */
+    public function calcTradeCost($tradeAmmount){
+        $totalCost = 0;
+        $cost = 4;
+        foreach($tradeAmmount as $ammount){ //for each item ammount calculate it's cost
+            $totalCost += $ammount * $cost;
+            $cost--;
+        }
+        return $totalCost; //return total cost of the trade
+    }
+
+    /**
+    * Checking if trade cost is equal on both sides
+    * @param float $tradeAmmount1, $tradeAmmount2
+    * @return \Illuminate\Http\Response
+    */
+    public function checkTradeCost($tradeAmmount1, $tradeAmmount2){
+        $cost1 = self::calcTradeCost($tradeAmmount1);
+        $cost2 = self::calcTradeCost($tradeAmmount2);
+
+        if($cost1 != $cost2){
+            return response()->json(ApiError::errorMessage('Invalid trade, not enough points', 403));
+        }
+    }
+
+    /**
+    * Executing trade in Survivor's Inventory
+    * @param float $tradeAmmount1, $tradeAmmount2
+    */
+    public function executeTrade($tradeAmmount1, $tradeAmmount2){
+        //add item being purchased and deduct item being sold, survivor1
+        $this->qtyWater += ($tradeAmmount2['water'] - $tradeAmmount1['water']);
+        $this->qtyFood += ($tradeAmmount2['food'] - $tradeAmmount1['food']); 
+        $this->qtyMedication += ($tradeAmmount2['medication'] - $tradeAmmount1['medication']); 
+        $this->qtyAmmo += ($tradeAmmount2['ammo'] - $tradeAmmount1['ammo']); 
     }
 }

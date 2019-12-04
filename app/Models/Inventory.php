@@ -41,7 +41,7 @@ class Inventory extends Model
      * Check if the survivor has the ammount of items necessary to 
      * @param  array $trade
      */
-    public function checkInventory($trade){
+    public function checkInventory(array $trade){
         if($trade['water'] > $this->qtyWater){
             return response()->json(ApiError::errorMessage('Not enough water to trade', 406));
         }else if($trade['food'] > $this->qtyFood){
@@ -52,37 +52,6 @@ class Inventory extends Model
             return response()->json(ApiError::errorMessage('Not enough ammo to trade', 406));
         }else{
             return 1;
-        }
-    }
-
-    /**
-    * Calculate the price for each trade
-    * @param  array $tradeAmmount
-    * @return \Illuminate\Http\Response
-    */
-    public function scopecalcTradeCost($tradeAmmount){
-        $totalCost = 0;
-        $cost = 4;
-
-        //for each item ammount calculate it's cost
-        foreach($tradeAmmount as $ammount){ 
-            $totalCost += $ammount * $cost;
-            $cost--;
-        }
-        return $totalCost; //return total cost of the trade
-    }
-
-    /**
-    * Checking if trade cost is equal on both sides
-    * @param float $tradeAmmount1, $tradeAmmount2
-    * @return \Illuminate\Http\Response
-    */
-    public function checkTradeCost($tradeAmmount1, $tradeAmmount2){
-        $cost1 = self::calcTradeCost($tradeAmmount1);
-        $cost2 = self::calcTradeCost($tradeAmmount2);
-
-        if($cost1 != $cost2){
-            return response()->json(ApiError::errorMessage('Invalid trade, not enough points', 403));
         }
     }
 

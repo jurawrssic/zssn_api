@@ -121,24 +121,24 @@ class SurvivorController extends Controller
         //checking if survivors are healthy
         if($survivor1->isAllowedToTrade() && $survivor2->isAllowedToTrade()){
             //ammount of each item that survivor1 wants to trade  
-            $tradeAmmount1 = array(
+            $tradeAmmount1 = [
                 'water' => $request->input('survivor1.qtyWater'),
                 'food' => $request->input('survivor1.qtyFood'),
                 'medication' => $request->input('survivor1.qtyMedication'),
                 'ammo' => $request->input('survivor1.qtyAmmo')
-            );
+            ];
     
             //ammount of each item that survivor2 wants to trade   
-            $tradeAmmount2 = array(
+            $tradeAmmount2 = [
                 'water' => $request->input('survivor2.qtyWater'),
                 'food' => $request->input('survivor2.qtyFood'),
                 'medication' => $request->input('survivor2.qtyMedication'),
                 'ammo' => $request->input('survivor2.qtyAmmo')
-            );
+            ];
 
             //calculating costs for both survivors
-            $tradeCost1 = Inventory::calcTradeCost($tradeAmmount1);
-            $tradeCost2 = Inventory::calcTradeCost($tradeAmmount2);
+            $tradeCost1 = self::calcTradeCost($tradeAmmount1);
+            $tradeCost2 = self::calcTradeCost($tradeAmmount2);
 
             //if trade cost is equivalent
             if($tradeCost1 == $tradeCost2){
@@ -154,7 +154,11 @@ class SurvivorController extends Controller
 
                     $inventory1->update();
                     $inventory2->update();
+                }else{
+                    return response()->json(ApiError::errorMessage('Invalid trade, not enough items', 403));    
                 }
+            }else{
+                return response()->json(ApiError::errorMessage('Invalid trade, trade cost isnt the same', 403));
             }
         }else{
             return response()->json(ApiError::errorMessage('Infected survivor(s) cannot trade', 403));
@@ -207,5 +211,26 @@ class SurvivorController extends Controller
     */
     public function infectedPercentage(){
         return Survivor::calcInfectedPercentage();
+    }
+
+    /**
+    * Calculate the price for each trade
+    * @param  array $tradeAmmount
+    * @return \Illuminate\Http\Response
+    */
+    public function calcTradeCost(array $tradeAmmount){
+        /** I tried moving this function to model but it wouldn't work, 
+        * it would return me 0 as a result every time or it wouldn't even accept my array as an array 
+        * so I moved it back here so things could work again and I could stop losing all my sanity over this
+        */
+        $totalCost = 0;
+        $cost = 4;
+        
+        //for each item ammount calculate it's cost
+        foreach($tradeAmmount as $ammount){ 
+            $totalCost += $ammount * $cost;
+            $cost--;
+        }
+        return $totalCost; //return total cost of the trade
     }
 }

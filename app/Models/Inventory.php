@@ -43,13 +43,13 @@ class Inventory extends Model
      */
     public function checkInventory(array $trade){
         if($trade['water'] > $this->qtyWater){
-            return response()->json(ApiError::errorMessage('Not enough water to trade', 406));
+            return 0;
         }else if($trade['food'] > $this->qtyFood){
-            return response()->json(ApiError::errorMessage('Not enough food to trade', 406));
+            return 0;
         }else if($trade['medication'] > $this->qtyMedication){
-            return response()->json(ApiError::errorMessage('Not enough medication to trade', 406));
+            return 0;
         }else if($trade['ammo'] > $this->qtyAmmo){
-            return response()->json(ApiError::errorMessage('Not enough ammo to trade', 406));
+            return 0;
         }else{
             return 1;
         }

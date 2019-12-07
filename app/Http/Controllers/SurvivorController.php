@@ -241,7 +241,7 @@ class SurvivorController extends Controller
             $totalCost += $ammount * $cost;
             $cost--;
         }
-        return $totalCost; //return total cost of the trade
+        return $totalCost; //return cost
     }
 
     public function calc(){

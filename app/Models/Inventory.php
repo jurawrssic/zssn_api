@@ -37,6 +37,7 @@ class Inventory extends Model
     //     );
     //     return $tradeAmmount;
     // }
+    //
 
     /**
      * Check if the survivor has the ammount of items necessary to 

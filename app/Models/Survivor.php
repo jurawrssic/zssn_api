@@ -36,7 +36,7 @@ class Survivor extends Model
 
     /**
     * Increments the infectedReports attribute to the specified Survivor
-    *  and checks if he's already considered infected or not
+    *  and then checks if he's already considered infected or not
     */
     public function reportAsInfected(){
         $this->infectedReports += 1;

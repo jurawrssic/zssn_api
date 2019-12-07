@@ -105,10 +105,12 @@ class Survivor extends Model
         $qtyInfected = ($infected = Survivor::where('infected', true))->count(); //get ammount of infected survivors
         $qtyNotInfected = ($notInfected = Survivor::where('infected', false))->count(); //get ammount of not infected survivors
         
+
         $percentage = array( //calculating percentages
-            'infectedPercentage' => ($qtyInfected / $qtySurvivors),
-            'notInfectedPercentage' => ($qtyNotInfected / $qtySurvivors),
-            'totalSurvivors' => $qtySurvivors
+            'infectedPercentage' => number_format((($qtyInfected / $qtySurvivors)*100), 2),
+            'notInfectedPercentage' => number_format((($qtyNotInfected / $qtySurvivors)*100), 2),
+            'totalSurvivors' => $qtySurvivors,
+            'infected' => $qtyInfected
         );
 
         return $percentage;

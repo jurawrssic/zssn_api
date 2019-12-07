@@ -27,15 +27,16 @@ class Inventory extends Model
         return $total;
     }
 
-    public function scopecalcAmmount($qtyWater, $qtyFood, $qtyMedication, $qtyAmmo){
-        $tradeAmmount = array(
-            'water' => $qtyWater,
-            'food' => $qtyFood,
-            'medication' => $qtyMedication,
-            'ammo' => $qtyAmmo
-        );
-        return $tradeAmmount;
-    }
+    // Didn't work so i dropped the ideia before i lost too much time on this
+    // public function scopecalcAmmount($qtyWater, $qtyFood, $qtyMedication, $qtyAmmo){
+    //     $tradeAmmount = array(
+    //         'water' => $qtyWater,
+    //         'food' => $qtyFood,
+    //         'medication' => $qtyMedication,
+    //         'ammo' => $qtyAmmo
+    //     );
+    //     return $tradeAmmount;
+    // }
 
     /**
      * Check if the survivor has the ammount of items necessary to 

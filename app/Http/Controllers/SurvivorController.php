@@ -9,6 +9,8 @@ use App\Models\Inventory;
 use App\Http\Resources\SurvivorResource;
 use App\Http\Resources\InventoryResource;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
 class SurvivorController extends Controller
 {
@@ -20,7 +22,15 @@ class SurvivorController extends Controller
      */
     public function index()
     {
-        return SurvivorResource::collection(Survivor::all());
+        $survivors = SurvivorResource::collection(Survivor::all());
+
+        $perPage = 15;
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $currentPageItems = $survivors->slice(($currentPage * $perPage) - $perPage, $perPage)->all();
+        $paginatedItems= new LengthAwarePaginator($currentPageItems , count($survivors), $perPage);
+        $paginatedItems->setPath('/survivors');
+ 
+        return view('survivors', ['survivors' => $paginatedItems]);
     }
 
     /**
@@ -29,29 +39,27 @@ class SurvivorController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    { 
-        try{            
+    {
+        try{
             //creating inventory
             $inventory = Inventory::create([
-                'qtyFood' => $request->input('inventory.qtyFood'),
-                'qtyWater' =>  $request->input('inventory.qtyWater'),
-                'qtyMedication' =>  $request->input('inventory.qtyMedication'),
-                'qtyAmmo' =>  $request->input('inventory.qtyAmmo'),
+                'qtyWater' =>  $request->input('inputQtyWater'),
+                'qtyFood' => $request->input('inputQtyFood'),
+                'qtyMedication' =>  $request->input('inputQtyMedication'),
+                'qtyAmmo' =>  $request->input('inputQtyAmmo')
             ]);
 
-            //treating the lastLocation array
-            $lastLocation = array($request->input('lastLocation.latitude'), $request->input('lastLocation.longitude'));
-            $lastLocation = serialize($lastLocation);
+            $lastLocation = "[".$request->input('inputLatitude').",".$request->input('inputLongitude')."]";
 
             //creating survivor
             $survivor = Survivor::create([
-                'name' => $request->name,
-                'age' => $request->age,
-                'gender' => $request->gender,
+                'name' => $request->input('inputNameSurvivor'),
+                'age' => $request->input('inputAgeSurvivor'),
+                'gender' => $request->input('genderSelect'),
                 'lastLocation' => $lastLocation, 
                 'infected' => false, //standard value
                 'infectedReports'=> 0, //standard value
-                'inventory_id' => $inventory->id,
+                'inventory_id' => $inventory->id
             ]);
         }catch(\Exception $e){
             if(config('app.debug')){
@@ -59,6 +67,7 @@ class SurvivorController extends Controller
             }
             return response()->json(ApiError::errorMessage('An error occurred', 1010), 500);
         }
+        return view('welcome');
     }
 
     /**
@@ -170,8 +179,9 @@ class SurvivorController extends Controller
     * @param  \Illuminate\Http\Request  $request
     * @return \Illuminate\Http\Response
     */
-    public function report($id){
-        $survivor = Survivor::find($id); //find the survivor you wish to report as infected
+    public function report(Request $request){
+        dd($request);
+        $survivor = Survivor::find($request); //find the survivor you wish to report as infected
         $survivor->reportAsInfected();
         $survivor->update();
     }
@@ -232,5 +242,13 @@ class SurvivorController extends Controller
             $cost--;
         }
         return $totalCost; //return total cost of the trade
+    }
+
+    public function calc(){
+        $infectedPercentage = self::infectedPercentage();
+        $lostPoints = self::lostPoints();
+        $avgItems = self::averageItems();
+        
+        return view('reports', compact('infectedPercentage', 'lostPoints', 'avgItems'));
     }
 }

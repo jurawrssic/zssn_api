@@ -24,6 +24,10 @@ class SurvivorResource extends JsonResource
             'inventory_id' => $this->inventory_id,            
             'created_at' => (string) $this->created_at,
             'updated_at' => (string) $this->updated_at,
+            'qtyWater' => $this->inventory->qtyWater,
+            'qtyFood' => $this->inventory->qtyFood,
+            'qtyMedication' => $this->inventory->qtyMedication,
+            'qtyAmmo' => $this->inventory->qtyAmmo,
         ];
     }
 }

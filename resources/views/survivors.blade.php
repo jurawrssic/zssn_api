@@ -32,7 +32,7 @@
                                    
                                 </div>
                                 <div class="form-group col-lg-6">   
-                                    <h5 class="mb-1">Inventory ID#{{$s->inventory->id}}</h5>
+                                    <h5 class="mb-1">Inventory ID#{{$s->inventory_id}}</h5>
                                     <br>    
                                     <div class="row">
                                         <div class="form-group col-lg-5">                                        
@@ -52,7 +52,7 @@
             <br>
             <hr class="mx-4">
             <div class="text-center">
-                <button type="button" class="btn btn-success" onclick="window.location='{{ route('home') }}'">Go back</button>
+                <button type="button" class="btn btn-light" onclick="window.location='{{ route('home') }}'">Go back</button>
             </div>
         </div>
     </body>

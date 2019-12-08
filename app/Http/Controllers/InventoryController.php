@@ -63,7 +63,7 @@ class InventoryController extends Controller
         try
         {
             $inventoryData = $request->all();
-            $inventory = $this->inventory->find($id);
+            $inventory = Inventory::find($id);
             $inventory->update($inventoryData);
         }catch(\Exception $e){
             if(config('app.debug'))

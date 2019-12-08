@@ -21,7 +21,7 @@
             <div class='text-center'>    
                 <button type="button" class="btn btn-info" onclick="window.location='{{ route('storeSurvivor') }}'">New Survivor</button>
                 <button type="button" class="btn btn-secondary" onclick="window.location='{{ route('survivors') }}'">List Survivors</button>
-                <button type="button" class="btn btn-success" onclick="window.location='{{ route('trade') }}'">Trade Items</button>
+                <button type="button" class="btn btn-success" onclick="window.location='{{ route('tradeView') }}'">Trade Items</button>
                 <button type="button" class="btn btn-warning" onclick="window.location='{{ route('genInfo') }}'">Reports</button>
             </div>
         </div>

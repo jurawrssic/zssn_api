@@ -20,7 +20,7 @@ class Survivor extends Model
     * Defining relationship between Models
     */
     public function inventory(){
-        return $this->hasOne('App\Models\Inventory', 'id');
+        return $this->hasOne(Inventory::class, 'id', 'id');
     }
 
     /**

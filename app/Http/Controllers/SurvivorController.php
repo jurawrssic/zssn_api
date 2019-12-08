@@ -22,7 +22,7 @@ class SurvivorController extends Controller
      */
     public function index()
     {
-        $survivors = SurvivorResource::collection(Survivor::all());
+        $survivors = Survivor::with('inventory')->get();
 
         // $perPage = 15;
         // $currentPage = LengthAwarePaginator::resolveCurrentPage();
@@ -31,7 +31,6 @@ class SurvivorController extends Controller
         // $paginatedItems->setPath('/survivors');
  
         // return view('survivors', ['survivors' => $paginatedItems]);
-
         return view('survivors', compact('survivors'));
     }
 
@@ -125,25 +124,25 @@ class SurvivorController extends Controller
     public function trade(Request $request)
     {
         //retrieving survivors through it's id
-        $survivor1 = Survivor::with('inventory')->get()->find($request->input('survivor1.id'));
-        $survivor2 = Survivor::with('inventory')->get()->find($request->input('survivor2.id')); 
+        $survivor1 = Survivor::with('inventory')->get()->find($request->input('id1'));
+        $survivor2 = Survivor::with('inventory')->get()->find($request->input('id2'));
 
         //checking if survivors are healthy
         if($survivor1->isAllowedToTrade() && $survivor2->isAllowedToTrade()){
             //ammount of each item that survivor1 wants to trade  
             $tradeAmmount1 = [
-                'water' => $request->input('survivor1.qtyWater'),
-                'food' => $request->input('survivor1.qtyFood'),
-                'medication' => $request->input('survivor1.qtyMedication'),
-                'ammo' => $request->input('survivor1.qtyAmmo')
+                'water' => $request->input('inputWater1'),
+                'food' => $request->input('inputFood1'),
+                'medication' => $request->input('inputMedication1'),
+                'ammo' => $request->input('inputAmmo1')
             ];
     
             //ammount of each item that survivor2 wants to trade   
             $tradeAmmount2 = [
-                'water' => $request->input('survivor2.qtyWater'),
-                'food' => $request->input('survivor2.qtyFood'),
-                'medication' => $request->input('survivor2.qtyMedication'),
-                'ammo' => $request->input('survivor2.qtyAmmo')
+                'water' => $request->input('inputWater2'),
+                'food' => $request->input('inputFood2'),
+                'medication' => $request->input('inputMedication2'),
+                'ammo' => $request->input('inputAmmo2')
             ];
 
             //calculating costs for both survivors
@@ -157,7 +156,7 @@ class SurvivorController extends Controller
                 $inventory2 = Inventory::find($survivor2->inventory_id);
 
                 //checking if survivors have the items they wish to sell/trade
-                if($inventory1->checkInventory($tradeAmmount1) && $inventory1->checkInventory($tradeAmmount2)){
+                if($inventory1->checkInventory($tradeAmmount1) && $inventory2->checkInventory($tradeAmmount2)){
                     //executing trade for both survivors
                     $inventory1->executeTrade($tradeAmmount1, $tradeAmmount2);
                     $inventory2->executeTrade($tradeAmmount2, $tradeAmmount1);
@@ -173,6 +172,7 @@ class SurvivorController extends Controller
         }else{
             return response()->json(ApiError::errorMessage('Infected survivor(s) cannot trade', 403));
         }
+        return view('welcome');
     }
 
     /**

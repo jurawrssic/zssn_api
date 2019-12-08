@@ -28,4 +28,4 @@ Route::get('/reports', function () {
 
 Route::get('/tradeItems', function () {
     return view('trade');
-})->name('trade');
+})->name('tradeView');

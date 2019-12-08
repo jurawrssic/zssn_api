@@ -16,7 +16,7 @@ class Inventory extends Model
     * Defining relationship between Models
     */
     public function survivor(){
-        return $this->belongsTo('\App\Models\Survivor');
+        return $this->belongsTo(Survivor::class);
     }
 
     /**

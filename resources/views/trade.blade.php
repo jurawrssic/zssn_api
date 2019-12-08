@@ -42,60 +42,63 @@
             <hr class="mx-4">
             <p class="lead text-center">Fill the form bellow including the ammount of each item you wish to trade, if none, insert 0.</p>
 
-            <form action="{{url('/survivors/trade')}}" method="post">
+            <form action="{{ route('trade') }}" method="post">
+                {{ csrf_field() }}
                 <fieldset>
                     <div class="row">                    
                         <div class="form-group col-lg-6">                        
                             <div class="form-group">
                                 <label for="inputNameSurvivor1">Survivor's #1 name</label>
-                                <input type="text" class="typeahead form-control" name="inputNameSurvivor1"> 
+                                <input type="text" class="typeahead form-control" id="name1" name="inputNameSurvivor1"> 
+                                <input type="number" name="id1" id="survivorId1" hidden>
                             </div>
                             <hr class="mx-4">
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="inputWater">Water</label>
-                                <input type="number" class="form-control" name="inputWater" placeholder="Quantity">
+                                <input type="number" class="form-control" name="inputWater1" placeholder="Quantity">
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="inputFood">Food</label>
-                                <input type="number" class="form-control" name="inputFood" placeholder="Quantity">
+                                <input type="number" class="form-control" name="inputFood1" placeholder="Quantity">
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="inputMedication">Medication</label>
-                                <input type="number" class="form-control" name="inputMedication" placeholder="Quantity">
+                                <input type="number" class="form-control" name="inputMedication1" placeholder="Quantity">
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="inputAmmo">Ammo</label>
-                                <input type="number" class="form-control" name="inputAmmo" placeholder="Quantity">
+                                <input type="number" class="form-control" name="inputAmmo1" placeholder="Quantity">
                             </div>
                         </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="inputNameSurvivor1">Survivor's #2 name</label>
-                                <input type="text" class="typeahead form-control" name="inputNameSurvivor2"> 
+                                <input type="text" class="typeahead form-control" id="name2" name="inputNameSurvivor2"> 
+                                <input type="number" name="id2" id="survivorId2" hidden>
                             </div>
                             <hr class="mx-4">
                             <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="inputWater">Water</label>
-                                <input type="number" class="form-control" name="inputWater" placeholder="Quantity">
+                                <input type="number" class="form-control" name="inputWater2" placeholder="Quantity">
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="inputFood">Food</label>
-                                <input type="number" class="form-control" name="inputFood" placeholder="Quantity">
+                                <input type="number" class="form-control" name="inputFood2" placeholder="Quantity">
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="inputMedication">Medication</label>
-                                <input type="number" class="form-control" name="inputMedication" placeholder="Quantity">
+                                <input type="number" class="form-control" name="inputMedication2" placeholder="Quantity">
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="inputAmmo">Ammo</label>
-                                <input type="number" class="form-control" name="inputAmmo" placeholder="Quantity">
+                                <input type="number" class="form-control" name="inputAmmo2" placeholder="Quantity">
                             </div>
                         </div>
                         </div>
@@ -108,14 +111,28 @@
 
         <script type="text/javascript">
             var path = "{{ route('autocomplete') }}";
-            $('input.typeahead').typeahead({
-            source:  function (query, process) {
-            return $.get(path, { query: query }, function (data) {
-                return process(data);
-                });
-            }
-        });
+            $('#name1').typeahead({
+                source:  function (query, process) {
+                    return $.get(path, { query: query }, function (data) {
+                        return process(data);
+                     });
+                },
+                updater: function(obj){
+                    document.getElementById('survivorId1').value = obj.id;            
+                    return obj;
+                }
+            });
+            $('#name2').typeahead({
+                source:  function (query, process) {
+                    return $.get(path, { query: query }, function (data) {
+                        return process(data);
+                     });
+                },
+                updater: function(obj){
+                    document.getElementById('survivorId2').value = obj.id;            
+                    return obj;
+                }
+            });
         </script>
-
     </body>
 </html>

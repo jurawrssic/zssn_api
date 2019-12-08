@@ -15,29 +15,50 @@
     <body class="container">
         <div class="jumbotron mt-3">
             <h1 class="display-3">Zombie Survival Network</h1>
-            <p class="lead text-center">Storing new Survivor.</p>
+            <p class="lead text-center">Report suspected survivor and check statistics.</p>
             <hr class="my-4">
-
+            <div class="row">                    
+                <div class="form-group col-lg-12">   
+                    <div class="card text-white bg-success mb-3" style="max-width:200rem;">
+                        <div class="card-header text-center">Average ammount of each kind of Item/Resource.</div>
+                        <div class="card-body">
+                            <div class="row text-center">                    
+                                <div class="form-group col-lg-6 text-right">   
+                                    Water: {{$avgItems['avgWater']}}
+                                    <br>
+                                    Food: {{$avgItems['avgFood']}}
+                                </div>
+                                <div class="form-group col-lg-6 text-left">   
+                                    Medication: {{$avgItems['avgMedication']}}
+                                    <br>
+                                    Ammo: {{$avgItems['avgAmmo']}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+            </div>
             <div class="row">                    
                 <div class="form-group col-lg-6">   
                     <div class="card text-white bg-warning mb-3" style="max-width:200rem;">
                         <div class="card-header text-center">General information about survivors</div>
                         <div class="card-body">
-                            Total Survivors: {{$infectedPercentage['totalSurvivors']}}
-                            <br>
-                            Infected: {{$infectedPercentage['infected']}}
-                            <br><br>
-                            Infected Survivors: {{$infectedPercentage['infectedPercentage']}}%
-                            <br>
-                            Healthy Survivors:  {{$infectedPercentage['notInfectedPercentage']}}%
-                            <br><br>
+                            <div class="row">       
+                                <div class="form-group col-lg-6">  
+                                    Total Survivors: {{$infectedPercentage['totalSurvivors']}}
+                                    <br>
+                                    Infected: {{$infectedPercentage['infected']}} 
+                                </div>
+                                <div class="form-group col-lg-6">   
+                                    Healthy Survivors:  {{$infectedPercentage['notInfectedPercentage']}}%
+                                    <br>
+                                    Infected Survivors: {{$infectedPercentage['infectedPercentage']}}%
+                                </div>
+                            </div>                  
                             Lost Points due to Infected Survivors: {{$lostPoints}}
                         </div>
                     </div>
-                </div>
-            
-
-            
+                </div>            
                 <div class="form-group col-lg-6">   
                     <div class="card text-white bg-danger mb-3" style="max-width:200rem;">
                         <div class="card-header text-center">Report survivor as infected</div>
@@ -54,10 +75,12 @@
                         </div>
                     </div>
                 </div>
+
+                
             </div>
             <div class='text-center'>
                 <hr class="my-4">
-                <button type="button" class="btn btn-dark" onclick="window.location='{{ route('home') }}'">Go back</button>
+                <button type="button" class="btn btn-light" onclick="window.location='{{ route('home') }}'">Go back</button>
             </div>
         </div>
               

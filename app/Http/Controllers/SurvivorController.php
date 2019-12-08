@@ -24,13 +24,15 @@ class SurvivorController extends Controller
     {
         $survivors = SurvivorResource::collection(Survivor::all());
 
-        $perPage = 15;
-        $currentPage = LengthAwarePaginator::resolveCurrentPage();
-        $currentPageItems = $survivors->slice(($currentPage * $perPage) - $perPage, $perPage)->all();
-        $paginatedItems= new LengthAwarePaginator($currentPageItems , count($survivors), $perPage);
-        $paginatedItems->setPath('/survivors');
+        // $perPage = 15;
+        // $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        // $currentPageItems = $survivors->slice(($currentPage * $perPage) - $perPage, $perPage)->all();
+        // $paginatedItems= new LengthAwarePaginator($currentPageItems , count($survivors), $perPage);
+        // $paginatedItems->setPath('/survivors');
  
-        return view('survivors', ['survivors' => $paginatedItems]);
+        // return view('survivors', ['survivors' => $paginatedItems]);
+
+        return view('survivors', compact('survivors'));
     }
 
     /**
@@ -91,9 +93,8 @@ class SurvivorController extends Controller
     {
         try
         {
-            $survivorData = $request->all();
-            $survivor = $this->survivor->find($id);
-            $survivor->update($survivorData);
+            $survivor = Survivor::find($id)->update($request->all());
+            $survivor->save();
         }
         catch(\Exception $e)
         {
@@ -180,8 +181,7 @@ class SurvivorController extends Controller
     * @return \Illuminate\Http\Response
     */
     public function report(Request $request){
-        dd($request);
-        $survivor = Survivor::find($request); //find the survivor you wish to report as infected
+        $survivor = Survivor::find($request->id); //find the survivor you wish to report as infected
         $survivor->reportAsInfected();
         $survivor->update();
     }

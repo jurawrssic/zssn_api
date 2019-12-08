@@ -63,13 +63,16 @@
                     <div class="card text-white bg-danger mb-3" style="max-width:200rem;">
                         <div class="card-header text-center">Report survivor as infected</div>
                         <div class="card-body">
-                            <form action="{{ route('reportSurvivor') }}" method="put">
+                            <form action="{{ route('reportSurvivor') }}" method="POST">
+                                {{ csrf_field() }}
                                 <fieldset>
                                 <div class="form-group">
                                     <label for="inputNameSurvivor">Search for the suspected survivor's name</label>
-                                    <input type="text" class="typeahead form-control" name="inputNameSurvivor"> 
+                                    <input type="hidden" name="_method" value="PUT">
+                                    <input type="text" class="typeahead form-control" name="name">
+                                    <input type="number" name="id" id="survivorId" hidden>
                                 </div>
-                                <button type="submit" class="btn btn-danger">Report</button>
+                                <button type="submit" class="btn btn-danger">Report</button>                                
                                 </fieldset>
                             </form>
                         </div>
@@ -91,6 +94,11 @@
             return $.get(path, { query: query }, function (data) {
                 return process(data);
                 });
+            },
+            updater: function(obj){
+                document.getElementById('survivorId').value = obj.id;
+
+                return obj;
             }
         });
         </script>

@@ -20,7 +20,7 @@
                         <div class="d-flex w-100 justify-content-between">
                                 <div class="form-group col-lg-6">   
                                     <h5 class="mb-1">{{$s->name}}
-                                    @if($s->infected )
+                                    @if($s->infectedReports >= 3)
                                         <small class="text-danger">Infected</small>
                                     @else
                                         <small class="text-success">Not infected</small>
@@ -52,7 +52,6 @@
             <br>
             <hr class="mx-4">
             <div class="text-center">
-                <?php echo $survivors->links(); ?>
                 <button type="button" class="btn btn-success" onclick="window.location='{{ route('home') }}'">Go back</button>
             </div>
         </div>

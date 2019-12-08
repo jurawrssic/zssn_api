@@ -21,10 +21,8 @@ class SearchController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function autocomplete(Request $request)
-    {
-        dd($data);
-        $data = Survivor::where("name","LIKE","%{$request->input('query')}%")->get();   
+    public function autocomplete(Request $request){
+        $data = Survivor::where("name","LIKE","%{$request->input('query')}%")->get();
         return response()->json($data);
     }
 }

@@ -31,7 +31,9 @@ Route::get('/reports/averageItems', 'SurvivorController@averageItems'); //report
 Route::get('/reports/percentage', 'SurvivorController@infectedPercentage'); //reports infection percentage
 Route::get('/reports/lostPoints', 'SurvivorController@lostPoints'); //reports lost points due to infected survivors
 
-Route::put('/survivors/{id}', 'SurvivorController@update'); //update an especific survivor
 Route::put('/survivors/report/', 'SurvivorController@report')->name("reportSurvivor"); //report an especific survivor as infected
+
+Route::put('/survivors/{id}', 'SurvivorController@update')->name("update"); //update an especific survivor
+
 Route::put('/survivors/location/{id}', 'SurvivorController@updateLastLocation'); //update survivor's location
 

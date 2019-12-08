@@ -101,7 +101,7 @@
                         </div>
                     </div>
                     <button type="submit" class="btn btn-secondary">Submit</button>
-                    <button type="button" class="btn btn-light" onclick="window.location='{{ route('home') }}'">Cancel  g</button>
+                    <button type="button" class="btn btn-light" onclick="window.location='{{ route('home') }}'">Cancel</button>
                 </fieldset>    
             </form>
         </div>

@@ -72,10 +72,10 @@ class Survivor extends Model
 
         //calculate average item per survivor
         $average = array( 
-            'avgWater' => (($totalItems['totalWater'])/$survivorsCount),
-            'avgFood' => (($totalItems['totalFood'])/$survivorsCount),
-            'avgMedication' => (($totalItems['totalMedication'])/$survivorsCount),
-            'avgAmmo' => (($totalItems['totalAmmo'])/$survivorsCount)
+            'avgWater' => number_format((($totalItems['totalWater'])/$survivorsCount), 2),
+            'avgFood' => number_format((($totalItems['totalFood'])/$survivorsCount), 2),
+            'avgMedication' => number_format((($totalItems['totalMedication'])/$survivorsCount), 2),
+            'avgAmmo' => number_format((($totalItems['totalAmmo'])/$survivorsCount), 2)
         );
 
         return $average;

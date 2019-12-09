@@ -14,6 +14,11 @@
             <h1 class="display-3">Zombie Survival Network</h1>
             <p class="lead text-center">Welcome to Murphytown!</p>
             <hr class="my-4">
+            @if(session('success_message'))
+                <div class="alert alert-success">
+                    {{ session('success_message') }}
+                </div>
+            @endif
             <form action="{{ route('store') }}" method="post">
                 {{ csrf_field() }}
                 <fieldset>
@@ -22,22 +27,22 @@
                             <p class="lead text-left">Fill out your form.</p>
                             <div class="form-group col-md-11">
                                 <label for="inputNameSurvivor">Type your name</label>
-                                <input type="text" class="form-control" name="inputNameSurvivor" placeholder="Enter name">
+                                <input type="text" class="form-control" name="inputNameSurvivor" placeholder="Enter name" required>
                             </div>
                             <div class="form-group col-md-8">
                                 <label for="inputAgeSurvivor">Enter your age</label>
-                                <input type="number" class="form-control" name="inputAgeSurvivor" placeholder="Enter age">
+                                <input type="number" class="form-control" name="inputAgeSurvivor" placeholder="Enter age" required>
                             </div>
                             <div class="form-group col-md-8">
                                 <label for="genderSelect">Select your gender</label>
-                                <select class="form-control" name="genderSelect" placeholder="-">
+                                <select class="form-control" name="genderSelect" placeholder="-" required>
                                     <option value="" disabled selected hidden>-</option>
                                     <option>Female</option>
                                     <option>Male</option>
                                 </select>
                             </div>
-                            <input class="form-control" id="lat" name="inputLatitude" hidden>
-                            <input class="form-control" id="lon" name="inputLongitude" hidden>
+                            <input class="form-control" id="lat" name="inputLatitude" hidden required>
+                            <input class="form-control" id="lon" name="inputLongitude" hidden required>
                         </div>
                         <div class="form-group col-lg-6">
                             <div id="map" style="height: 100%; width: 100%"></div>
@@ -51,19 +56,19 @@
                 <div class="form-row">
                     <div class="form-group col-md-3">
                         <label for="inputWater">How many water bottles you got?</label>
-                        <input type="number" class="form-control" name="inputQtyWater" placeholder="Quantity">
+                        <input type="number" class="form-control" name="inputQtyWater" placeholder="Quantity" required>
                     </div>
                     <div class="form-group col-md-3">
                         <label for="inputFood">How much food you got?</label>
-                        <input type="number" class="form-control" name="inputQtyFood" placeholder="Quantity">
+                        <input type="number" class="form-control" name="inputQtyFood" placeholder="Quantity" required>
                     </div>
                     <div class="form-group col-md-3">
                         <label for="inputMedication">How many meds you got?</label>
-                        <input type="number" class="form-control" name="inputQtyMedication" placeholder="Quantity">
+                        <input type="number" class="form-control" name="inputQtyMedication" placeholder="Quantity" required>
                     </div>
                     <div class="form-group col-md-3">
                         <label for="inputAmmo">How much ammo you got?</label>
-                        <input type="number" class="form-control" name="inputQtyAmmo" placeholder="Quantity">
+                        <input type="number" class="form-control" name="inputQtyAmmo" placeholder="Quantity" required>
                     </div>
                 </div>
             <button type="submit" class="btn btn-secondary">Submit</button>
@@ -98,5 +103,7 @@
             }
         </script>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAksAD4fzPuTTHSvzpB4jqaMgFSszSZlk4&callback=initMap" async defer></script>
+        
+        @include('sweetalert::alert')
     </body>
 </html>

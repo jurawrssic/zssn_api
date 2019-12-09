@@ -18,6 +18,10 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
+Route::get('/updateLocation', function () {
+    return view('updateSurvivor')->with('message', 'Sucessfully added');
+})->name('updateView'); 
+
 Route::get('/storeSurvivor', function () {
     return view('newSurvivor');
 })->name('storeSurvivor'); 

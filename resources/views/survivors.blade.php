@@ -55,4 +55,5 @@
                 <button type="button" class="btn btn-light" onclick="window.location='{{ route('home') }}'">Go back</button>
             </div>
         </div>
+        @include('sweetalert::alert')
     </body>

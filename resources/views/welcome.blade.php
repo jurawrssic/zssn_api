@@ -9,7 +9,13 @@
     
         <title>ZSSN</title>
     </head>
+
     <body class="container">
+        @if(session('success_message'))
+            <div class="alert alert-success">
+                {{ session('success_message') }}
+            </div>
+        @endif
         <div class="jumbotron mt-3">
             <h1 class="display-3">Zombie Survival Network</h1>
             <p class="lead"></p>
@@ -26,5 +32,6 @@
             </div>
         </div>
         <script src="{{ asset('js/app.js') }}"></script>
+        @include('sweetalert::alert')
     </body>
 </html>

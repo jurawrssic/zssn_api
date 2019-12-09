@@ -69,7 +69,7 @@
                                 <div class="form-group">
                                     <label for="inputNameSurvivor">Search for the suspected survivor's name</label>
                                     <input type="hidden" name="_method" value="PUT">
-                                    <input type="text" class="typeahead form-control" name="name">
+                                    <input type="text" class="typeahead form-control" name="name" required>
                                     <input type="number" name="id" id="survivorId" hidden>
                                 </div>
                                 <button type="submit" class="btn btn-danger">Report</button>                                
@@ -78,28 +78,26 @@
                         </div>
                     </div>
                 </div>
-
+                <script type="text/javascript">
+                    var path = "{{ route('autocomplete') }}";
+                    $('input.typeahead').typeahead({
+                        source:  function (query, process) {
+                            return $.get(path, { query: query }, function (data) {
+                                return process(data);
+                            }); 
+                    },
+                    updater: function(obj){
+                        document.getElementById('survivorId').value = obj.id;
+                        return obj;
+                    }
+                });
+                </script>
                 
             </div>
             <div class='text-center'>
                 <hr class="my-4">
                 <button type="button" class="btn btn-light" onclick="window.location='{{ route('home') }}'">Go back</button>
             </div>
-        </div>
-              
-        <script type="text/javascript">
-            var path = "{{ route('autocomplete') }}";
-            $('input.typeahead').typeahead({
-            source:  function (query, process) {
-            return $.get(path, { query: query }, function (data) {
-                return process(data);
-                });
-            },
-            updater: function(obj){
-                document.getElementById('survivorId').value = obj.id;
-
-                return obj;
-            }
-        });
-        </script>
+        </div>       
+        @include('sweetalert::alert')     
     </body>

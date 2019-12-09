@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Session;
+use RealRashid\SweetAlert\Facades\Alert;
 use App\API\ApiError;
 use App\API\ApiSucess;
 use App\Models\Survivor;
@@ -11,6 +13,7 @@ use App\Http\Resources\InventoryResource;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Redirect;
 
 class SurvivorController extends Controller
 {
@@ -23,7 +26,7 @@ class SurvivorController extends Controller
     public function index()
     {
         $survivors = Survivor::with('inventory')->get();
-
+        
         // $perPage = 15;
         // $currentPage = LengthAwarePaginator::resolveCurrentPage();
         // $currentPageItems = $survivors->slice(($currentPage * $perPage) - $perPage, $perPage)->all();
@@ -31,6 +34,7 @@ class SurvivorController extends Controller
         // $paginatedItems->setPath('/survivors');
  
         // return view('survivors', ['survivors' => $paginatedItems]);
+        
         return view('survivors', compact('survivors'));
     }
 
@@ -68,7 +72,7 @@ class SurvivorController extends Controller
             }
             return response()->json(ApiError::errorMessage('An error occurred', 1010), 500);
         }
-        return view('welcome');
+        return Redirect::route('storeSurvivor')->with('toast_success', 'Survivor sucessfully added!');
     }
 
     /**
@@ -172,7 +176,7 @@ class SurvivorController extends Controller
         }else{
             return response()->json(ApiError::errorMessage('Infected survivor(s) cannot trade', 403));
         }
-        return view('welcome');
+        return Redirect::route('tradeView')->with('toast_success', 'Trade sucessfull!');
     }
 
     /**
@@ -184,6 +188,7 @@ class SurvivorController extends Controller
         $survivor = Survivor::find($request->id); //find the survivor you wish to report as infected
         $survivor->reportAsInfected();
         $survivor->update();
+        return Redirect::route('home')->with('toast_success', 'Survivor sucessfully reported!');     
     }
 
     /**

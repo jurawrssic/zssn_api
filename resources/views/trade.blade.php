@@ -13,6 +13,11 @@
         <title>ZSSN - Trade Items</title>      
     </head>
     <body class="container">
+        @if(session('success_message'))
+            <div class="alert alert-success">
+                {{ session('success_message') }}
+            </div>
+        @endif
         <div class="jumbotron mt-3">        
             
             <h1 class="display-3">Zombie Survival Network</h1>
@@ -49,56 +54,56 @@
                         <div class="form-group col-lg-6">                        
                             <div class="form-group">
                                 <label for="inputNameSurvivor1">Survivor's #1 name</label>
-                                <input type="text" class="typeahead form-control" id="name1" name="inputNameSurvivor1"> 
+                                <input type="text" class="typeahead form-control" id="name1" name="inputNameSurvivor1" required> 
                                 <input type="number" name="id1" id="survivorId1" hidden>
                             </div>
                             <hr class="mx-4">
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="inputWater">Water</label>
-                                <input type="number" class="form-control" name="inputWater1" placeholder="Quantity">
+                                <input type="number" class="form-control" name="inputWater1" placeholder="Quantity" required>
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="inputFood">Food</label>
-                                <input type="number" class="form-control" name="inputFood1" placeholder="Quantity">
+                                <input type="number" class="form-control" name="inputFood1" placeholder="Quantity" required>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="inputMedication">Medication</label>
-                                <input type="number" class="form-control" name="inputMedication1" placeholder="Quantity">
+                                <input type="number" class="form-control" name="inputMedication1" placeholder="Quantity" required>
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="inputAmmo">Ammo</label>
-                                <input type="number" class="form-control" name="inputAmmo1" placeholder="Quantity">
+                                <input type="number" class="form-control" name="inputAmmo1" placeholder="Quantity" required>
                             </div>
                         </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="inputNameSurvivor1">Survivor's #2 name</label>
-                                <input type="text" class="typeahead form-control" id="name2" name="inputNameSurvivor2"> 
+                                <input type="text" class="typeahead form-control" id="name2" name="inputNameSurvivor2" required> 
                                 <input type="number" name="id2" id="survivorId2" hidden>
                             </div>
                             <hr class="mx-4">
                             <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="inputWater">Water</label>
-                                <input type="number" class="form-control" name="inputWater2" placeholder="Quantity">
+                                <input type="number" class="form-control" name="inputWater2" placeholder="Quantity" required>
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="inputFood">Food</label>
-                                <input type="number" class="form-control" name="inputFood2" placeholder="Quantity">
+                                <input type="number" class="form-control" name="inputFood2" placeholder="Quantity" required>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="inputMedication">Medication</label>
-                                <input type="number" class="form-control" name="inputMedication2" placeholder="Quantity">
+                                <input type="number" class="form-control" name="inputMedication2" placeholder="Quantity" required>
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="inputAmmo">Ammo</label>
-                                <input type="number" class="form-control" name="inputAmmo2" placeholder="Quantity">
+                                <input type="number" class="form-control" name="inputAmmo2" placeholder="Quantity" required>
                             </div>
                         </div>
                         </div>
@@ -134,5 +139,6 @@
                 }
             });
         </script>
+        @include('sweetalert::alert')
     </body>
 </html>

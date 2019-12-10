@@ -17,61 +17,44 @@
             <h1 class="display-3">Zombie Survival Network</h1>
             <p class="lead text-center">Welcome to Murphytown!</p>
             <hr class="my-4">
-            <form action="{{ route('store') }}" method="post">
+            <form action="{{ route('updateLocation') }}" method="post">
                 {{ csrf_field() }}
                 <fieldset>
                 <div class="row">                    
-                        <div class="form-group col-lg-6">
-                            <p class="lead text-left">Fill out your form.</p>
-                            <div class="form-group col-md-11">
-                                <label for="inputNameSurvivor">Type your name</label>
-                                <input type="text" class="typeahead form-control" id="name" name="inputNameSurvivor" placeholder="Enter name"> 
-                            </div>
-                            <div class="form-group col-md-8">
-                                <label for="inputAgeSurvivor">Enter your age</label>
-                                <input type="number" class="form-control" name="inputAgeSurvivor" id="inputAge" placeholder="Enter age" disabled>
-                            </div>
-                            <div class="form-group col-md-8">
-                                <label for="genderSelect">Select your gender</label>
-                                <select class="form-control" name="genderSelect" id="selectGender" placeholder="-" disabled>
-                                    <option value="" disabled selected hidden>-</option>
-                                    <option>Female</option>
-                                    <option>Male</option>
-                                </select>
-                            </div>
-                            <input class="form-control" id="lat" name="inputLatitude" hidden>
-                            <input class="form-control" id="lon" name="inputLongitude" hidden>
+                    <div class="form-group col-lg-6">
+                        <p class="lead text-left">Search for your name</p>
+                        <div class="form-group col-md-11">
+                            <label for="inputNameSurvivor">Name</label>
+                            <input type="hidden" name="_method" value="PUT">
+                            <input type="number" name="id" id="survivorId" hidden>
+                            <input type="text" class="typeahead form-control" id="name" name="inputNameSurvivor" placeholder="Enter name">                             
                         </div>
-                        <div class="form-group col-lg-6">
-                            <div id="map" style="height: 100%; width: 100%"></div>
-                            <p class="text-center">*Click on your current location</p>
+                        <div class="form-group col-md-8">
+                            <label for="inputAgeSurvivor">Enter your age</label>
+                            <input type="number" class="form-control" name="inputAgeSurvivor" id="inputAge" placeholder="Enter age" disabled>
                         </div>
-                </div>
-                
-                <hr class="my-4">
-                <p class="lead text-center">What you packin?</p>
+                        <div class="form-group col-md-8">
+                            <label for="genderSelect">Select your gender</label>
+                            <select class="form-control" name="genderSelect" id="selectGender" placeholder="-" disabled>
+                                <option value="" disabled selected hidden>-</option>
+                                <option>Female</option>
+                                <option>Male</option>
+                            </select>                       
+                        </div>
+                        <input class="form-control" id="lat" name="inputLatitude" hidden required>
+                        <input class="form-control" id="lon" name="inputLongitude" hidden required>
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <div id="map" style="height: 100%; width: 100%"></div>
+                        <p class="text-center">*Click on your current location</p>
 
-                <div class="form-row">
-                    <div class="form-group col-md-3">
-                        <label for="inputWater">How many water bottles you got?</label>
-                        <input type="number" class="form-control" name="inputQtyWater" id="inputWater" placeholder="Quantity" disabled>
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label for="inputFood">How much food you got?</label>
-                        <input type="number" class="form-control" name="inputQtyFood" id="inputFood" placeholder="Quantity" disabled>
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label for="inputMedication">How many meds you got?</label>
-                        <input type="number" class="form-control" name="inputQtyMedication" id="inputMedications" placeholder="Quantity" disabled>
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label for="inputAmmo">How much ammo you got?</label>
-                        <input type="number" class="form-control" name="inputQtyAmmo" id="inputAmmo" placeholder="Quantity" disabled>
                     </div>
                 </div>
-            <button type="submit" class="btn btn-secondary">Submit</button>
-            <button type="button" class="btn btn-light" onclick="window.location='{{ url('/') }}'">Cancel</button>
-            </fieldset>
+                <br>
+                <hr class="my-4">
+                <button type="submit" class="btn btn-secondary">Submit</button>
+                <button type="button" class="btn btn-light" onclick="window.location='{{ url('/') }}'">Cancel</button>
+                </fieldset>
             </form>
         </div>
 
@@ -84,21 +67,14 @@
                 });
             },
             updater: function(obj){
+                document.getElementById('survivorId').value = obj.id;
                 document.getElementById('inputAge').value = obj.age;
                 document.getElementById('selectGender').value = obj.gender;
                 console.log(obj);
-
-                document.getElementById('inputWater').value = obj.inventory.qtyWater;
-
-                document.getElementById('inputFood').value = obj.inventory.qtyWater;
-                document.getElementById('inputMedication').value = obj.inventory.qtyWater;
-                document.getElementById('inputAmmo').value = obj.inventory.qtyWater;
                 return obj;
             }
         });
         </script>
-
-
 
         <script>        
             var map;

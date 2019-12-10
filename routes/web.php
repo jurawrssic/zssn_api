@@ -19,7 +19,7 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/updateLocation', function () {
-    return view('updateSurvivor')->with('message', 'Sucessfully added');
+    return view('updateSurvivor');
 })->name('updateView'); 
 
 Route::get('/storeSurvivor', function () {

@@ -18,6 +18,11 @@
                 {{ session('success_message') }}
             </div>
         @endif
+        @if(count($errors)>0)
+            <div class="alert alert-danger">
+                {{$error}}
+            </div>
+        @endif
         <div class="jumbotron mt-3">        
             
             <h1 class="display-3">Zombie Survival Network</h1>

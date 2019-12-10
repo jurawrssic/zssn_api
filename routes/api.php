@@ -33,7 +33,7 @@ Route::get('/reports/lostPoints', 'SurvivorController@lostPoints'); //reports lo
 
 Route::put('/survivors/report/', 'SurvivorController@report')->name("reportSurvivor"); //report an especific survivor as infected
 
-Route::put('/survivors/{id}', 'SurvivorController@update')->name("update"); //update an especific survivor
+Route::put('/survivors/update', 'SurvivorController@update')->name("update"); //update an especific survivor
 
-Route::put('/survivors/location/{id}', 'SurvivorController@updateLastLocation'); //update survivor's location
+Route::put('/survivors/updateLocation/', 'SurvivorController@updateLastLocation')->name("updateLocation"); //update survivor's location
 

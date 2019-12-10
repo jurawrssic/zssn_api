@@ -13,7 +13,8 @@ $factory->define(\App\Models\Survivor::class, function (Faker $faker) {
         'name' => $faker->name($gender),
         'age' => $faker->numberBetween(1,99),
         'gender' => $gender,
-        'lastLocation' => ['latitude' => $faker->latitude(-90, 90), 'longitude' => $faker->latitude(-180, 180)],
+        'lastLocation' => ['['.'latitude' => $faker->latitude(-90, 90).',', 'longitude' => $faker->latitude(-180, 180).']'],
+
         'infected'=> 0,
         'infectedReports' => 0,
         'inventory_id' => factory(Inventory::class)->create()

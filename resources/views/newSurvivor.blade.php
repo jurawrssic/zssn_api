@@ -77,7 +77,7 @@
             </form>
         </div>
 
-        <script>        
+        <script>       
             var map;
             var marker;
 

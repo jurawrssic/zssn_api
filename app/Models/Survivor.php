@@ -34,6 +34,10 @@ class Survivor extends Model
         }
     }
 
+    public function updateLocation($newLocation){
+        $this->lastLocation = $newLocation;
+    }
+
     /**
     * Increments the infectedReports attribute to the specified Survivor
     *  and then checks if he's already considered infected or not

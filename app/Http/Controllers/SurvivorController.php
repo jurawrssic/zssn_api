@@ -168,13 +168,16 @@ class SurvivorController extends Controller
                     $inventory1->update();
                     $inventory2->update();
                 }else{
-                    return response()->json(ApiError::errorMessage('Invalid trade, not enough items', 403));    
+                    return Redirect::route('tradeView')->with('toast_error', 'Not enought item(s)');
+                    //return response()->json(ApiError::errorMessage('Invalid trade, not enough items', 403));    
                 }
             }else{
-                return response()->json(ApiError::errorMessage('Invalid trade, trade cost isnt the same', 403));
+                return Redirect::route('tradeView')->with('toast_error', 'Invalid, trade cost is not the same');
+                //return response()->json(ApiError::errorMessage('Invalid trade, trade cost isnt the same', 403));
             }
         }else{
-            return response()->json(ApiError::errorMessage('Infected survivor(s) cannot trade', 403));
+            //return response()->json(ApiError::errorMessage('Infected survivor(s) cannot trade', 403));
+            return Redirect::route('tradeView')->with('toast_error', 'Infected survivor(s) cannot trade');
         }
         return Redirect::route('tradeView')->with('toast_success', 'Trade sucessfull!');
     }
@@ -197,11 +200,14 @@ class SurvivorController extends Controller
     * @return \Illuminate\Http\Response
     */
     public function updateLastLocation(Request $request){
-        $survivor = Survivor::find($request->input('survivor.id')); //find the survivor you wish to update location
-        $lastLocation = array($request->input('lastLocation.latitude'), $request->input('lastLocation.longitude'));
-        $lastLocation = serialize($lastLocation);
-        $survivor->lastLocation = $lastLocation;
+        $survivor = Survivor::find($request->id); //find the survivor you wish to update location
+        
+        $lastLocation = "[".$request->input('inputLatitude').",".$request->input('inputLongitude')."]";
+
+        $survivor->updateLocation($lastLocation);
         $survivor->update();
+        
+        return Redirect::route('home')->with('toast_success', 'Location updated');
     }
 
     /**

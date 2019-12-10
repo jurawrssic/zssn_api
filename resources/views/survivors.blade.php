@@ -20,7 +20,7 @@
                         <div class="d-flex w-100 justify-content-between">
                                 <div class="form-group col-lg-6">   
                                     <h5 class="mb-1">{{$s->name}}
-                                    @if($s->infectedReports >= 3)
+                                    @if($s->infected)
                                         <small class="text-danger">Infected</small>
                                     @else
                                         <small class="text-success">Not infected</small>
@@ -28,6 +28,10 @@
                                     </h5>
                                     <p class="mb-1">Age: {{$s->age}}</p>
                                     <p class="mb-1">Gender: {{$s->gender}}</p>
+                                    <?php 
+                                        $loc = substr(serialize($s->lastLocation), 6, -2);
+                                    ?>
+                                    <p class="mb-1">Last known location: <br> {{$loc}}</p>
                                     <p class="mb-1">Infected Reports: {{$s->infectedReports}}</p>
                                    
                                 </div>

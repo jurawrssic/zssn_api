@@ -9,4 +9,5 @@ This repository contains a REST API which meets the following requirements:
   - Reports on: percentage of survivors, average items per survivor and lost points due to infection.
 
 The API was developed using Laravel, has basic documentation and a few tests.
-*Added front-end
+
+*Added front-end*
